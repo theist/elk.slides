@@ -45,17 +45,95 @@
           <h4>Va de montar un stack ELK en 127.0.0.1 y empujarle unos logs, para fardar con los amigos</h4>
         </section>
         <section>
-          <h1>E·  lasticSearch</h1>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el1.png">
+          </section>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el2.png">
+          </section>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el3.png">
+          </section>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el4.png">
+          </section>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el5.png">
+          </section>
+          <section data-transition-speed="fast" data-background-transition="none" data-background="img/el6.png">
+          </section>
+          <section data-background-transition="zoom" data-background="img/money.png">
+          </section>
         </section>
         <section>
-          <h1>L·  ogstash</h1>
+          <h1><font color="lightgreen">E</font>lasticSearch</h1>
+          <p>You Know, for Search</p>
         </section>
         <section>
-          <h1>K·  ibana</h1>
+          <p>De elastic search ya sabemos todos bastante no?</p>
+          <pre><code data-trim "bash">
+wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz
+tar -vxzf elasticsearch-1.4.4.tar.gz
+cd elasticsearch-1.4.4
+echo cluster.name: cluster$RANDOM | tee -a config/elasticseach.yml
+bin/elasticsearch
+          </code></pre>
+          <p><strong>Importante</strong>: Cada version de Logstash lleva asociada una version de elasticsearch en en este caso lo recomendable sería bajar la 1.4.2 pero kibana 4 necesita la 1.4.4 para funcionar. Actualmente vamos por la 1.5.2</p>
         </section>
         <section>
-          <p>Sorry de kibana solo hay demo!</p>
-          <p>The End (Recordarme que pare de hablar en algún momento)</p>
+          <h1><font color="#806517">L</font>ogstash</h1>
+          <p>Esta es la parte guapa (para sysadmins)<p>
+        </section>
+        <section>
+          <p>Logstash es un colector, transformador y transportador de logs</p>
+          <pre><code data-trim "bash">
+wget https://download.elastic.co/logstash/logstash/logstash-1.4.2.tar.gz
+tar -vxzf logstash-1.4.2.tar.gz
+cd logstash-1.4.2
+          </code></pre>
+          </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que basicamente trabajan con JSONes</p>
+        </section>
+        <section>
+          <h3>Configuración</h3>
+          <p>La configuración de elastic se basa en tres secciones entradas filtros y salidas, en cualquier seccion puede haber multiples de cada, siempre en ese oden. Ojo! cada plugin es uno o mas procesos de java esperando a ser puestos a currar</p>
+        <h4>Referencias a campos e interpolacion de cadenas</h4>
+        <p> Se puede hacer referencia a campos y usarlos dentro de cadenas</p>
+        <code>add_tag => "hello %{[custom][greting]}"</code>
+        <p>Se pueden hacer bloques condicionales it else if else</p>
+        <p>estos bloques soportan las operaciones 
+        <code>== != < > <= >=, =~ !~, in, not in, and or nand xor y !</code>
+        </section>
+        <section>
+          <h2>Entradas interesantes</h2>
+          stdin
+          file
+          irc
+          redis
+        </section>
+        <section>
+          <h2>Salidas interesantes</h2>
+          stdeout
+          file
+          elasticsearch
+          redis
+        </section>
+        <section>
+          <h2>Filtros interesantes</h2>
+          mutate
+          date
+          grok
+          useragent
+          geoip
+        </section>
+        <section>
+          <h1><font color="blue">K</font>ibana</h1>
+          <p>Esta es la parte guapa (para el resto)</p>
+        </section>
+        <section>
+          <p>Kibana es una applicacion web para consultar Elasticsearch</p>
+          <p>Está hecha en Node</p>
+          <pre><code data-trim "bash">
+wget https://download.elastic.co/kibana/kibana/kibana-4.0.2-linux-x64.tar.gz
+tar -vxzf kibana-4.0.2-linux-x64.tar.gz
+cd kibana-4.0.2
+bin/kibana
+          </code></pre>
+          <p> De kibana no hay slides como mejor se ve es <a href="http://localhost:5601">funcionando</a>
         </section>
 			</div>
 
