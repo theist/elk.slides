@@ -87,6 +87,10 @@ tar -vxzf logstash-1.4.2.tar.gz
 cd logstash-1.4.2
           </code></pre>
           </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que basicamente trabajan con JSONes</p>
+          <h4>Test It!</h4> 
+          <pre><code data-trim>
+bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
+</code><pre>
         </section>
         <section>
           <h3>Configuración</h3>
@@ -100,17 +104,45 @@ cd logstash-1.4.2
         </section>
         <section>
           <h2>Entradas interesantes</h2>
-          stdin
-          file
-          irc
-          redis
+        </section>
+        <section>
+          <h2>Entradas "raw"</h2>
+          <h4>stdin, file, tcp / udp, unix socket </h4>
+          <p>Son entradas que permiten capturar lineas de log, stdin se usa sobre todo como sistema de debug para ir pegando en consola lineas de log y ver como se van comportando nuestros filtros</p>
+          <p>TCP y file ya son tipos de entrada mas serios, y preparados para produccion, en el caso de file, el plugin de entrada es capaz de detectar rotados truncados etc, y actua como un <code>tail -f</code> sobre un fichero</p>
+        </section>
+        <section>
+          <h2>Entradas "buffer"</h2>
+          <p>Son tipos de entrada que capturan eventos desde sistemas intermedios pensados para servir de buffer para la entrada</p> 
+          <ul>
+            <li>Ammazon SQS</li>
+            <li>Redis</li>
+            <li>RabbitMQ</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Plugins de entrada especializados</h2>
+          <ul>
+            <li>XMPP: Captura eventos de streams jabber</li>
+            <li>Varnishlog: Captura eventos de un log de varnish local</li>
+            <li>Twitter: Captura tweets de una array de keywords facilitado</li>
+            <li>Syslog: Actua como un servidor de syslog</li>
+            <li>S3: lee cualquier fichero que se deposite en un bucket, descomprimiendolo si fuere menester </li>
+            <li>Log4j: Crea un puerto TCP al que se puede conectar cualquier cosa compatible con log4j</li>
+            <li>IRC: Lee eventos de un servidor IRC</li>
+            <li>IMAP: Lee correos enteros, manda a la papelera los que procesa </li>
+            <li>Heroku: Lee logs de una app de heroku, como cuando se consultan con el heroku toolbelt</li>
+            <li>Eventlog: Lee logs de un log de eventos de m$</li>
+            <li>Drupal_dblog: Lee eventos del drupal watchdog, consultando periodicamnte mysql y marcando en la bdd si estan procesados o no</li>
+          </ul>
         </section>
         <section>
           <h2>Salidas interesantes</h2>
-          stdeout
-          file
-          elasticsearch
-          redis
+        </section>
+        <section>
+         <h2>Obviamente ElasticSearch</h2>
+         </p>Es la salida as testada y sin ella tiene poco sentido hablar de stack ELK ya que kibana solo funciona sobre ES.</p>
+         <p>Para nuestro setup es importante indicarle el nombre del cluster.</p>
         </section>
         <section>
           <h2>Filtros interesantes</h2>
