@@ -92,10 +92,12 @@ tar -vxzf logstash-1.5.0.tar.gz
 cd logstash-1.5.0
           </code></pre>
           </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que basicamente trabajan con JSONes</p>
+          <div class="fragment">
           <h4>Test It!</h4> 
           <pre><code data-trim>
 bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
 </code><pre>
+        </div>
         </section>
         <section>
           <h3>Configuración</h3>
@@ -153,13 +155,118 @@ bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
          <p>Para nuestro setup es importante indicarle el nombre del cluster.</p>
         </section>
         <section>
-          <h2>Filtros interesantes</h2>
-          mutate
-          date
-          grok
-          useragent
-          geoip
+         <h2>Salidas "raw"</h2>
+         <p> Las mismas que entradas tcp, udp, unix socket, pipe, exec, file, stdout</p>
+         <p> Añado S3, dado que basicamente es una salida "file" que ademas guarda en la nube los ficheros, y añado http, que es una salida que, para cada evento, realiza un POST con el evento como payload</p>
         </section>
+        <section>
+          <h2>Salidas a otros DataStores</h2>
+          <ul>
+          <li>CSV: Un "datastore" la mar de simple</li>
+          <li>google_bigquery</li>
+          <li>mongodb</li>
+          <li>opentsdb</li>
+          <li>rabbitmq</li>
+          <li>redis</li>
+          <li>riak</li>
+          <li>sqs</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Salidas a servicios o notificaciones</h2>
+          <p>
+            <div style="display: table;">
+            <div style="display: table-row;">
+            <div style="display: table-cell;">
+
+          <ul>
+          <li>Cloudwatch</li>
+          <li>Datadog</li>
+          <li>librato</li>
+          <li>loggly</li>
+          <li>pagerduty</li>
+          </ul>
+          </div>
+          <div style="display: table-cell;">
+          <ul>
+          <li>ganglia</li>
+          <li>zabbix</li>
+          <li>graphite</li>
+          <li>statsd</li>
+          </ul>
+          </div>
+          <div style="display: table-cell;">
+          <ul>
+          <li>jira</li>
+          <li>nagios</li>
+          <li>redmine</li>
+          <li>email</li>
+          </ul>
+          </div>
+          <div style="display: table-cell;">
+          <ul>
+          <li>irc</li>
+          <li>hipchat</li>
+          <li>xmpp</li>
+          <li>sns</li>
+          </ul>
+          </div>
+          </div>
+          </div>
+          </p>
+        </section>
+
+          <section>
+          <h2>Filtros interesantes</h2>
+          </section>
+          <section>
+            <h1>Grok</h1>
+            <p>Uno de los filtros mas importantes, permite mapear expresiones regulares
+            a distintos campos del evento. Acompaña una serie de reglas para que pueda 
+            ser usado sin un conocimiento profundo del lenguaje de matcheo. Y ademas se puede <a href="http://grokdebug.herokuapp.com/">probar en heroku</a></p>
+            <p> Some samples:
+            <ul>
+              <li><code>Completed in:%{NUMBER:backend_time:float}</code></li>
+              <li><code>I, \[%{TIMESTAMP_ISO8601:lgtime} #%{NUMBER:pid}\]</code></li>
+              <li><code>%{NOSPACE:d1} +%{GREEDYDATA:d2} +%{DATA:d3}</code></li>
+              <li><code>%{COMBINEDACCESSLOG:logevent}</code></li>
+            </ul>
+            Ver mas en <font color="orange">vendor/bundle/jruby/1.9/gems/logstash-patterns-core-0.1.10/patterns/grok-patterns</font>
+            </p>
+          </section>
+          <section>
+            <h2>Date</h2>
+            <p> Es vital para hacer postmortems. Cambia el timestamp del evento para
+            que entre en elasticsearch de acuerdo a la hora que indique el evento.
+            Gracias a este plugin se pueden indexar eventos antguos en ES </p>
+            <pre><code>date {
+  locale => 'en'
+  target => '@timestamp'
+  match => [ "lgtime" , "yyyy-MM-dd HH:mm:ss"]
+}</code></pre>
+          </section>
+          <section>
+            <h2>mutate</h2>
+            <p>Permite agregar quitar y modificar el valor de algunos campos</p>
+            </p>Tambien permite otras operaciones (lowecase, uppercase, gsub, split, join, replace...) Ademas permite establecer a entero flotante o cadena el valor de un campo.<p>
+          </section>
+          <section>
+            <h2> Otros Filtros </h2>
+            <ul>
+              <li>useragent: Calcula campos en base a un user agent string</li>
+              <li>geoip: Calcula datos de Geo IP en base a un campo IP</li>
+              <li>dns: Realiza lookups dns para un campo IP</li>
+              <li>ruby: Ejecuta codigo ruby, sin mas</li>
+              <li>anonymize: Cambia campos por un HASH consistente</li>
+              <li>grep: Dropea eventos que matchean</li>
+              <li>kv: Extrae campos arbitrarios de la forma keyword=value</li>
+          </ul>
+        </section>
+        <section>
+            <h2>Codecs</h2>
+            <h4 class="fragment"> Os los cuento otro día </h4>
+            <h6 class="fragment">Vosotros lo agradecereis y yo no tengo muy claro que son...</h6>
+          </section>
         <section>
           <h1><font color="blue">K</font>ibana</h1>
           <p>Esta es la parte guapa (para el resto)</p>
