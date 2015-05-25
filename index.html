@@ -78,7 +78,7 @@ cd elasticsearch-1.5.1
 echo cluster.name: cluster$RANDOM | tee -a config/elasticseach.yml
 bin/elasticsearch
           </code></pre>
-          <p><strong>Importante</strong>: Cada version de Logstash lleva asociada una version de elasticsearch en en este caso lo recomendable sería bajar la 1.4.2 pero kibana 4 necesita la 1.4.4 para funcionar. Actualmente vamos por la 1.5.2</p>
+          <p><strong>Importante</strong>: Cada versión de Logstash lleva asociada una versión de elasticsearch en en este caso lo recomendable sería bajar la 1.4.2 pero kibana 4 necesita la 1.4.4 para funcionar. Actualmente vamos por la 1.5.2</p>
         </section>
         <section>
           <h1><font color="#806517">L</font>ogstash</h1>
@@ -91,7 +91,7 @@ wget https://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.tar.gz
 tar -vxzf logstash-1.5.0.tar.gz
 cd logstash-1.5.0
           </code></pre>
-          </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que basicamente trabajan con JSONes</p>
+          </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que básicamente trabajan con JSONes</p>
           <div class="fragment">
           <h4>Test It!</h4> 
           <pre><code data-trim>
@@ -102,7 +102,7 @@ bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
         <section>
           <h3>Configuración</h3>
           <p>La configuración de elastic se basa en tres secciones entradas filtros y salidas, en cualquier seccion puede haber multiples de cada, siempre en ese oden. Ojo! cada plugin es uno o mas procesos de java esperando a ser puestos a currar</p>
-        <h4>Referencias a campos e interpolacion de cadenas</h4>
+        <h4>Referencias a campos e interpolación de cadenas</h4>
         <p> Se puede hacer referencia a campos y usarlos dentro de cadenas</p>
         <code>add_tag => "hello %{[custom][greting]}"</code>
         <p>Se pueden hacer bloques condicionales it else if else</p>
@@ -115,14 +115,14 @@ bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
         <section>
           <h2>Entradas "raw"</h2>
           <h4>stdin, file, tcp / udp, unix socket </h4>
-          <p>Son entradas que permiten capturar lineas de log, stdin se usa sobre todo como sistema de debug para ir pegando en consola lineas de log y ver como se van comportando nuestros filtros</p>
-          <p>TCP y file ya son tipos de entrada mas serios, y preparados para produccion, en el caso de file, el plugin de entrada es capaz de detectar rotados truncados etc, y actua como un <code>tail -f</code> sobre un fichero</p>
+          <p>Son entradas que permiten capturar líneas de log, stdin se usa sobre todo como sistema de debug para ir pegando en consola líneas de log y ver como se van comportando nuestros filtros</p>
+          <p>TCP y file ya son tipos de entrada mas serios, y preparados para producción, en el caso de file, el plugin de entrada es capaz de detectar rotados truncados etc, y actua como un <code>tail -f</code> sobre un fichero</p>
         </section>
         <section>
           <h2>Entradas "buffer"</h2>
           <p>Son tipos de entrada que capturan eventos desde sistemas intermedios pensados para servir de buffer para la entrada</p> 
           <ul>
-            <li>Ammazon SQS</li>
+            <li>Amazon SQS</li>
             <li>Redis</li>
             <li>RabbitMQ</li>
             <li>couchdb (changes) new!</li>
@@ -153,11 +153,14 @@ bin/logstash -e 'input { stdin { } } output { stdout { codec => rubydebug } }'
          <h2>Obviamente ElasticSearch</h2>
          </p>Es la salida as testada y sin ella tiene poco sentido hablar de stack ELK ya que kibana solo funciona sobre ES.</p>
          <p>Para nuestro setup es importante indicarle el nombre del cluster.</p>
+         <pre><code>elasticseach {
+  cluster  => { "clustername" }
+}</code></pre>
         </section>
         <section>
          <h2>Salidas "raw"</h2>
          <p> Las mismas que entradas tcp, udp, unix socket, pipe, exec, file, stdout</p>
-         <p> Añado S3, dado que basicamente es una salida "file" que ademas guarda en la nube los ficheros, y añado http, que es una salida que, para cada evento, realiza un POST con el evento como payload</p>
+         <p> Añado S3, dado que es una salida "file" que además guarda en la nube los ficheros, y añado http, que es una salida que, para cada evento, realiza un POST con el evento como payload</p>
         </section>
         <section>
           <h2>Salidas a otros DataStores</h2>
@@ -286,8 +289,13 @@ bin/kibana
           <h4>Discover</h4>
           <p> Es para buscar datos sobre elasticsearch, la barra de busqueda funciona con <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">lenguaje de busquedas de elasticsearch</a></p>
           <h4>Visualization</h4>
-          <p>Sirve para crear visualizaciones de datos, Los tipos de visualizaciones dependen de Kibana, las capacidades (media sumatorio percentiles) de elasticsearch</p>
+          <p>Sirve para crear visualizaciones de datos, Los tipos de visualizaciones dependen de Kibana, las capacidades (media sumatorio percentiles) de elasticsearch así como las agrupaciones (histograma, términos, rangos...)</p>
+          <h4>Dashboards</h4>
+          <p>Son agrupaciones de visualizaciones. Ni el rango temporal ni la cadena de búsqueda están guardadas en el dashboard por lo que se permite alterarlos para que afecten a todas las visualizaciones</p>
         </section>
+        <section>
+          Y ya, voy a enredar en directo con kibana. Tirarme algo a la cabeza para que deje de hablar.
+          </section>
 
 			</div>
 		</div>
