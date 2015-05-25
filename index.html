@@ -67,9 +67,9 @@
         <section>
           <p>De elastic search ya sabemos todos bastante no?</p>
           <pre><code data-trim "bash">
-wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz
-tar -vxzf elasticsearch-1.4.4.tar.gz
-cd elasticsearch-1.4.4
+wget  https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.1.tar.gz
+tar -vxzf elasticsearch-1.5.1.tar.gz
+cd elasticsearch-1.5.1
 echo cluster.name: cluster$RANDOM | tee -a config/elasticseach.yml
 bin/elasticsearch
           </code></pre>
@@ -82,9 +82,9 @@ bin/elasticsearch
         <section>
           <p>Logstash es un colector, transformador y transportador de logs</p>
           <pre><code data-trim "bash">
-wget https://download.elastic.co/logstash/logstash/logstash-1.4.2.tar.gz
-tar -vxzf logstash-1.4.2.tar.gz
-cd logstash-1.4.2
+wget https://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.tar.gz
+tar -vxzf logstash-1.5.0.tar.gz
+cd logstash-1.5.0
           </code></pre>
           </p>Logstash está escrito en JRuby, dispone de un lenguaje de configuración mas o menos complejo y un sistema de plugins basado en entradas, filtros y salidas y codecs que basicamente trabajan con JSONes</p>
           <h4>Test It!</h4> 
@@ -168,10 +168,16 @@ tar -vxzf kibana-4.0.2-linux-x64.tar.gz
 cd kibana-4.0.2
 bin/kibana
           </code></pre>
-          <p> De kibana no hay slides como mejor se ve es <a href="http://localhost:5601">funcionando</a>
+          <p> De kibana no hay casi slides como mejor se ve es <a href="http://localhost:5601">funcionando</a>
         </section>
-			</div>
+        <section>
+          <h4>Discover</h4>
+          <p> Es para buscar datos sobre elasticsearch, la barra de busqueda funciona con <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">lenguaje de busquedas de elasticsearch</a></p>
+          <h4>Visualization</h4>
+          <p>Sirve para crear visualizaciones de datos, Los tipos de visualizaciones dependen de Kibana, las capacidades (media sumatorio percentiles) de elasticsearch</p>
+        </section>
 
+			</div>
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
